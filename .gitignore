@@ -1,0 +1,7 @@
+#Maven
+target/
+**/.*
+!**/.gitignore
+!**/.dockerignore
+!.editorconfig
+!.idea
