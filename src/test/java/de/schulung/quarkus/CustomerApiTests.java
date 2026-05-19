@@ -96,7 +96,40 @@ class CustomerApiTests {
       .statusCode(415);
   }
 
-  // TODO: when created, GET /customers should return array with new customer (with UUID)
+  // when created, GET /customers should return array with new customer (with UUID)
+  @Test
+  void given_created_customer_when_get_customers_then_customer_is_in_array() {
+    // setup
+    var newCustomerUuid = given()
+      .contentType(ContentType.JSON)
+      .body("""
+            {
+              "name": "Tom Mayer",
+              "birthdate": "2020-05-19",
+              "state": "active"
+            }
+        """)
+      .accept(ContentType.JSON)
+      .when()
+      .post("/customers")
+      .then()
+      .statusCode(201)
+      .contentType(ContentType.JSON)
+      .body("uuid", is(notNullValue()))
+      .extract().path("uuid");
+
+    // test
+    given()
+      .when()
+      .get("/customers")
+      .then()
+      .statusCode(200)
+      .contentType(ContentType.JSON)
+      // see https://github.com/rest-assured/rest-assured/wiki/usage#json-example
+      .body("find { it.uuid == '%s' }".formatted(newCustomerUuid), is(notNullValue()));
+
+  }
+
 
   // TODO: when created, use UUID to request for single customer
   // TODO: Location-Header exists and contains URL to new resource
