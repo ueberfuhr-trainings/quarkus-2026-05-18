@@ -9,16 +9,19 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Path("/customers")
 public class CustomersResource {
 
+  private final Map<UUID, Customer> customers = new ConcurrentHashMap<>();
+
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Collection<?> getCustomers() {
-    return List.of();
+  public Collection<Customer> getCustomers() {
+    return customers.values();
   }
 
   @POST
@@ -26,6 +29,7 @@ public class CustomersResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response createCustomer(Customer customer) {
     customer.setUuid(UUID.randomUUID());
+    customers.put(customer.getUuid(), customer);
     return Response
       .status(Response.Status.CREATED)
       .entity(customer)
