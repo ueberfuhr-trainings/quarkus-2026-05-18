@@ -18,6 +18,7 @@ class CustomerApiTests {
   @Test
   void when_get_customers_then_status_ok() {
     given()
+      .accept(ContentType.JSON)
       .when()
       .get("/customers")
       .then()
