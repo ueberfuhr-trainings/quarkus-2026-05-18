@@ -120,6 +120,7 @@ class CustomerApiTests {
 
     // test
     given()
+      .accept(ContentType.JSON)
       .when()
       .get("/customers")
       .then()
@@ -131,7 +132,44 @@ class CustomerApiTests {
   }
 
 
-  // TODO: when created, use UUID to request for single customer
+  // when created, use UUID to request for single customer
+  @Test
+  void given_created_customer_when_get_customer_by_uuid_then_customer_is_returned() {
+    // setup
+    var newCustomerUuid = given()
+      .contentType(ContentType.JSON)
+      .body("""
+            {
+              "name": "Tom Mayer",
+              "birthdate": "2020-05-19",
+              "state": "active"
+            }
+        """)
+      .accept(ContentType.JSON)
+      .when()
+      .post("/customers")
+      .then()
+      .statusCode(201)
+      .contentType(ContentType.JSON)
+      .body("uuid", is(notNullValue()))
+      .extract().path("uuid");
+
+    // test
+    given()
+      .accept(ContentType.JSON)
+      .pathParam("uuid", newCustomerUuid)
+      .when()
+      .get("/customers/{uuid}")
+      .then()
+      .statusCode(200)
+      .contentType(ContentType.JSON)
+      .body("name", is(equalTo("Tom Mayer")))
+      .body("birthdate", is(equalTo("2020-05-19")))
+      .body("state", is(equalTo("active")))
+      .body("uuid", is(equalTo(newCustomerUuid)));
+
+  }
+
   // TODO: Location-Header exists and contains URL to new resource
   // TODO: when requesting a non-existing customer, 404 is returned
   // TODO: invalid accept header for single customer request -> 406
