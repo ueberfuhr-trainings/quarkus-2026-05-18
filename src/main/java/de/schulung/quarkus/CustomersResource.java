@@ -4,6 +4,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -35,5 +36,13 @@ public class CustomersResource {
       .entity(customer)
       .build();
   }
+
+  @GET
+  @Path("/{uuid}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Customer getCustomerById(@PathParam("uuid") UUID uuid) {
+    return customers.get(uuid);
+  }
+
 
 }
