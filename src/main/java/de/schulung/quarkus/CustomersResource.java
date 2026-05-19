@@ -1,5 +1,6 @@
 package de.schulung.quarkus;
 
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -21,6 +22,7 @@ public class CustomersResource {
   }
 
   @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public Response createCustomer(Customer customer) {
     customer.setUuid(UUID.randomUUID());

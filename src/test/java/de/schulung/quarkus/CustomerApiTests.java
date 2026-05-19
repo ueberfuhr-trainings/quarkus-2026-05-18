@@ -64,12 +64,46 @@ class CustomerApiTests {
       .body("uuid", is(notNullValue()));
   }
 
-  // TODO: Content Negotiation: invalid Accept -> 406, invalid Content-Type -> 415
-  // TODO: when created with UUID, use UUID to request for single customer
+  // Content Negotiation: invalid Accept -> 406, invalid Content-Type -> 415
+
+  @Test
+  void when_post_customers_and_invalid_accept_then_status_not_acceptable() {
+    given()
+      .contentType(ContentType.JSON)
+      .body("""
+            {
+              "name": "Tom Mayer",
+              "birthdate": "2020-05-19",
+              "state": "active"
+            }
+        """)
+      .accept(ContentType.XML)
+      .when()
+      .post("/customers")
+      .then()
+      .statusCode(406);
+  }
+
+  @Test
+  void when_post_customers_and_invalid_content_type_then_status_unsupported_mediatype() {
+    given()
+      .contentType(ContentType.XML)
+      .body("<customer/>")
+      .accept(ContentType.JSON)
+      .when()
+      .post("/customers")
+      .then()
+      .statusCode(415);
+  }
+
+  // TODO: when created, GET /customers should return array with new customer (with UUID)
+
+  // TODO: when created, use UUID to request for single customer
   // TODO: Location-Header exists and contains URL to new resource
   // TODO: when requesting a non-existing customer, 404 is returned
   // TODO: invalid accept header for single customer request -> 406
   // TODO: when creating a customer, a UUID must not be sent with the request body -> 400
+  // TODO: GET /customers?state=locked should not contain a customer that was created with state=active
 
 
 }
