@@ -27,5 +27,17 @@ class CustomerApiTests {
       .body("", is(instanceOf(List.class)));
   }
 
+  // GET /customers mit XML -> 406
+
+  @Test
+  void given_accept_xml_when_get_customers_then_status_not_acceptable() {
+    given()
+      .accept(ContentType.XML)
+      .when()
+      .get("/customers")
+      .then()
+      .statusCode(406);
+  }
+
 
 }
