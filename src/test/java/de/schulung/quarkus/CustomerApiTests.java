@@ -173,7 +173,6 @@ class CustomerApiTests {
   // TODO: Location-Header exists and contains URL to new resource
   // TODO: when requesting a non-existing customer, 404 is returned
   // TODO: invalid accept header for single customer request -> 406
-  // TODO: when creating a customer, a UUID must not be sent with the request body -> 400
   // TODO: GET /customers?state=locked should not contain a customer that was created with state=active
 
 
