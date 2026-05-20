@@ -1,8 +1,13 @@
 package de.schulung.quarkus;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Getter
+@Setter
 public class Customer {
 
   private UUID uuid;
@@ -11,39 +16,4 @@ public class Customer {
   private LocalDate birthdate;
   private String state;
 
-  public UUID getUuid() {
-    return uuid;
-  }
-
-  public Customer setUuid(UUID uuid) {
-    this.uuid = uuid;
-    return this;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public Customer setName(String name) {
-    this.name = name;
-    return this;
-  }
-
-  public LocalDate getBirthdate() {
-    return birthdate;
-  }
-
-  public Customer setBirthdate(LocalDate birthdate) {
-    this.birthdate = birthdate;
-    return this;
-  }
-
-  public String getState() {
-    return state;
-  }
-
-  public Customer setState(String state) {
-    this.state = state;
-    return this;
-  }
 }
