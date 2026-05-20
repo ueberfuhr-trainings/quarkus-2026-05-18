@@ -355,6 +355,15 @@ class CustomerApiTests {
         "state": "active"
       }
       """,
+    // invalid state
+    """
+      {
+        "name": "Tom Mayer",
+        "birthdate": "2001-04-23",
+        "state": "gelbekatze"
+      }
+      """,
+
   })
   void given_invalid_customer_when_post_customers_then_bad_request(String body) {
     given()
