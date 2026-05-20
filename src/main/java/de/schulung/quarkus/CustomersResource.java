@@ -1,5 +1,6 @@
 package de.schulung.quarkus;
 
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
@@ -34,7 +35,7 @@ public class CustomersResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createCustomer(Customer customer, UriInfo uriInfo) {
+  public Response createCustomer(@Valid Customer customer, UriInfo uriInfo) {
     customersService.createCustomer(customer);
     var location = uriInfo
       .getAbsolutePathBuilder()
