@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import io.quarkus.jackson.ObjectMapperCustomizer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Dependent;
-import jakarta.ws.rs.Produces;
+import jakarta.enterprise.inject.Produces;
 
 @ApplicationScoped
 public class JacksonConfiguration {
