@@ -11,14 +11,16 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 import java.util.stream.Stream;
 
 @Path("/customers")
+@RequiredArgsConstructor
 public class CustomersResource {
 
-  private final CustomersService customersService = new CustomersService();
+  private final CustomersService customersService;
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
