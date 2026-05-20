@@ -12,31 +12,28 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 @Path("/customers")
 public class CustomersResource {
 
-  private final Map<UUID, Customer> customers = new ConcurrentHashMap<>();
+  private final CustomersService customersService = new CustomersService();
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Stream<Customer> getCustomers(@QueryParam("state") String stateFilter) {
-    return customers
-      .values()
-      .stream()
-      .filter(customer -> null == stateFilter || customer.getState().equals(stateFilter));
+    return
+      null == stateFilter
+        ? customersService.getCustomers()
+        : customersService.getCustomersByState(stateFilter);
   }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public Response createCustomer(Customer customer, UriInfo uriInfo) {
-    customer.setUuid(UUID.randomUUID());
-    customers.put(customer.getUuid(), customer);
+    customersService.createCustomer(customer);
     var location = uriInfo
       .getAbsolutePathBuilder()
       .path(customer.getUuid().toString())
@@ -51,11 +48,9 @@ public class CustomersResource {
   @Path("/{uuid}")
   @Produces(MediaType.APPLICATION_JSON)
   public Customer getCustomerById(@PathParam("uuid") UUID uuid) {
-    final var result = customers.get(uuid);
-    if (null == result) {
-      throw new NotFoundException();
-    }
-    return result;
+    return customersService
+      .getCustomerById(uuid)
+      .orElseThrow(NotFoundException::new);
   }
 
 
