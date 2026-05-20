@@ -11,7 +11,7 @@ public class JacksonConfiguration {
 
   @Produces
   @Dependent
-  public ObjectMapperCustomizer objectMapperCustomizer() {
+  ObjectMapperCustomizer objectMapperCustomizer() {
     return objectMapper -> objectMapper
       .configure(
         DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES,
