@@ -1,14 +1,13 @@
 package de.schulung.quarkus;
 
+import de.schulung.quarkus.testing.TableChanges;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
-import org.assertj.db.type.AssertDbConnectionFactory;
 import org.assertj.db.type.Changes;
 import org.junit.jupiter.api.Test;
 
-import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.UUID;
@@ -21,21 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CustomersApiWithDatabaseChecksTests {
 
   @Inject
-  DataSource dataSource;
-
-  private Changes customersTableChanges() {
-    return AssertDbConnectionFactory
-      .of(dataSource)
-      .create()
-      .changes()
-      .table("customers")
-      .build();
-  }
-
+  @TableChanges("customers")
+  Changes changes;
+  
   // POST /customers -> 201 + neuer Datensatz
   @Test
   void when_post_customers_then_status_created_and_inserted_into_database() {
-    final var changes = customersTableChanges();
     changes.setStartPointNow();
 
     var newCustomerUuid = given()
@@ -71,7 +61,6 @@ public class CustomersApiWithDatabaseChecksTests {
   // POST /customers mit invalidem Accept-Header -> 400 + keine Datenbankänderung
   @Test
   void when_post_customers_and_invalid_accept_then_status_not_acceptable_and_database_unmodified() {
-    final var changes = customersTableChanges();
     changes.setStartPointNow();
 
     given()
