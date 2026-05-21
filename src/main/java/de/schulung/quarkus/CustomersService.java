@@ -1,39 +1,41 @@
 package de.schulung.quarkus;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 @ApplicationScoped
+@RequiredArgsConstructor
 public class CustomersService {
 
-  private final Map<UUID, Customer> customers = new ConcurrentHashMap<>();
+  private final CustomersRepository customersRepository;
 
   public Stream<Customer> getCustomers() {
-    return customers
-      .values()
+    return customersRepository
+      .findAll()
       .stream();
   }
 
   public Stream<Customer> getCustomersByState(String state) {
-    return getCustomers()
-      .filter(customer -> customer.getState().equals(state));
+    return customersRepository
+      .findAllByState(state)
+      .stream();
   }
 
   public Optional<Customer> getCustomerById(@NotNull UUID uuid) {
-    return Optional
-      .ofNullable(customers.get(uuid));
+    return customersRepository
+      .findByIdOptional(uuid);
   }
 
+  @Transactional
   public void createCustomer(@Valid @NotNull Customer customer) {
-    customer.setUuid(UUID.randomUUID());
-    customers.put(customer.getUuid(), customer);
+    customersRepository.persist(customer);
   }
 
 
