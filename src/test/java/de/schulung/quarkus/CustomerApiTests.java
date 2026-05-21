@@ -4,10 +4,14 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -308,7 +312,38 @@ class CustomerApiTests {
 
   }
 
+  static Stream<String> invalidCustomerJsons() {
+    return Stream.of(
+      // name with more than 100 characters
+      """
+        {
+          "name": "%s",
+          "birthdate": "2001-04-23",
+          "state": "active"
+        }
+        """
+        .formatted(
+          "a".repeat(101)
+        ),
+      // customer is too young
+      """
+        {
+          "name": "Tom Mayer",
+          "birthdate": "%s",
+          "state": "active"
+        }
+        """
+        .formatted(
+          LocalDate
+            .now()
+            .minusYears(10)
+            .format(DateTimeFormatter.ISO_DATE)
+        )
+    );
+  }
+
   @ParameterizedTest
+  @MethodSource("invalidCustomerJsons")
   @ValueSource(strings = {
     // UUID included
     """
@@ -354,14 +389,6 @@ class CustomerApiTests {
     """
       {
         "name": "T",
-        "birthdate": "2001-04-23",
-        "state": "active"
-      }
-      """,
-    // name with more than 100 characters
-    """
-      {
-        "name": "T0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789",
         "birthdate": "2001-04-23",
         "state": "active"
       }
