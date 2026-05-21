@@ -67,7 +67,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
@@ -78,7 +78,7 @@ class CustomerApiTests {
       .statusCode(201)
       .contentType(ContentType.JSON)
       .body("name", is(equalTo("Tom Mayer")))
-      .body("birthdate", is(equalTo("2020-05-19")))
+      .body("birthdate", is(equalTo("2000-05-19")))
       .body("state", is(equalTo("active")))
       .body("uuid", is(notNullValue()));
   }
@@ -124,7 +124,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
@@ -160,7 +160,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
@@ -183,7 +183,7 @@ class CustomerApiTests {
       .statusCode(200)
       .contentType(ContentType.JSON)
       .body("name", is(equalTo("Tom Mayer")))
-      .body("birthdate", is(equalTo("2020-05-19")))
+      .body("birthdate", is(equalTo("2000-05-19")))
       .body("state", is(equalTo("active")))
       .body("uuid", is(equalTo(newCustomerUuid)));
 
@@ -198,7 +198,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
@@ -220,7 +220,7 @@ class CustomerApiTests {
       .statusCode(200)
       .contentType(ContentType.JSON)
       .body("name", is(equalTo("Tom Mayer")))
-      .body("birthdate", is(equalTo("2020-05-19")))
+      .body("birthdate", is(equalTo("2000-05-19")))
       .body("state", is(equalTo("active")));
 
   }
@@ -252,7 +252,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
@@ -285,7 +285,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
