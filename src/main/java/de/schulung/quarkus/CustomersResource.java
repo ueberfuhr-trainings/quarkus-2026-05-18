@@ -1,7 +1,6 @@
 package de.schulung.quarkus;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
@@ -28,7 +27,7 @@ public class CustomersResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Stream<Customer> getCustomers(
     @QueryParam("state")
-    @Pattern(regexp = "active|locked|disabled")
+    @CustomerState
     String stateFilter
   ) {
     return
