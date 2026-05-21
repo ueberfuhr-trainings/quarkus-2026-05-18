@@ -2,9 +2,15 @@ package de.schulung.quarkus;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @QuarkusTest
 class CustomersServiceTests {
@@ -12,12 +18,39 @@ class CustomersServiceTests {
   @Inject
   CustomersService customersService;
 
-  // Idee: ParameterizedTest mit mehreren Customers-Objekten
+  static Stream<Arguments> invalidCustomers() {
+    return Stream.of(
+      Arguments.of(
+        "empty customer",
+        new Customer()
+      ),
+      Arguments.of(
+        "null customer",
+        null
+      ),
+      Arguments.of(
+        "customer without birthdate",
+        new Customer()
+          .setName("Tom Mayer")
+          .setState("active")
+      )
+    );
+  }
+
+  @ParameterizedTest(name = "[{index}] {0}")
+  @MethodSource("invalidCustomers")
+  void given_invalid_customer_when_create_customer_then_validation_exception(
+    String description,
+    Customer customer
+  ) {
+    assertThatThrownBy(() -> customersService.createCustomer(customer))
+      .isInstanceOf(ValidationException.class);
+  }
+
   @Test
-  void given_invalid_customer_when_create_customer_then_validation_exception() {
-    final var customer = new Customer();
-    // Idee: AssertJ Assertions
-    assertThrows(Exception.class, () -> customersService.createCustomer(customer));
+  void given_null_id_when_get_customer_by_id_then_validation_exception() {
+    assertThatThrownBy(() -> customersService.getCustomerById(null))
+      .isInstanceOf(ValidationException.class);
   }
 
 }
