@@ -37,7 +37,7 @@ class CustomerApiTests {
   void given_invalid_state_parameter_when_get_customers_then_status_bad_request() {
     given()
       .accept(ContentType.JSON)
-      .param("state", "gelbekatze")
+      .queryParam("state", "gelbekatze")
       .when()
       .get("/customers")
       .then()
