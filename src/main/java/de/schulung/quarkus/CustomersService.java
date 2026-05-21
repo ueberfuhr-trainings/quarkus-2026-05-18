@@ -1,6 +1,7 @@
 package de.schulung.quarkus;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.validation.Valid;
 
 import java.util.Map;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class CustomersService {
       .ofNullable(customers.get(uuid));
   }
 
-  public void createCustomer(Customer customer) {
+  public void createCustomer(@Valid Customer customer) {
     customer.setUuid(UUID.randomUUID());
     customers.put(customer.getUuid(), customer);
   }
