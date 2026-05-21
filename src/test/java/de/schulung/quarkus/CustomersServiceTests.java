@@ -1,5 +1,6 @@
 package de.schulung.quarkus;
 
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.validation.ValidationException;
@@ -13,6 +14,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @QuarkusTest
+@TestTransaction
 class CustomersServiceTests {
 
   @Inject
