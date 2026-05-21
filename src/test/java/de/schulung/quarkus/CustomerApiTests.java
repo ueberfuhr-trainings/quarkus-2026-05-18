@@ -4,10 +4,14 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -63,7 +67,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
@@ -74,7 +78,7 @@ class CustomerApiTests {
       .statusCode(201)
       .contentType(ContentType.JSON)
       .body("name", is(equalTo("Tom Mayer")))
-      .body("birthdate", is(equalTo("2020-05-19")))
+      .body("birthdate", is(equalTo("2000-05-19")))
       .body("state", is(equalTo("active")))
       .body("uuid", is(notNullValue()));
   }
@@ -120,7 +124,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
@@ -156,7 +160,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
@@ -179,7 +183,7 @@ class CustomerApiTests {
       .statusCode(200)
       .contentType(ContentType.JSON)
       .body("name", is(equalTo("Tom Mayer")))
-      .body("birthdate", is(equalTo("2020-05-19")))
+      .body("birthdate", is(equalTo("2000-05-19")))
       .body("state", is(equalTo("active")))
       .body("uuid", is(equalTo(newCustomerUuid)));
 
@@ -194,7 +198,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
@@ -216,7 +220,7 @@ class CustomerApiTests {
       .statusCode(200)
       .contentType(ContentType.JSON)
       .body("name", is(equalTo("Tom Mayer")))
-      .body("birthdate", is(equalTo("2020-05-19")))
+      .body("birthdate", is(equalTo("2000-05-19")))
       .body("state", is(equalTo("active")));
 
   }
@@ -248,7 +252,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
@@ -281,7 +285,7 @@ class CustomerApiTests {
       .body("""
             {
               "name": "Tom Mayer",
-              "birthdate": "2020-05-19",
+              "birthdate": "2000-05-19",
               "state": "active"
             }
         """)
@@ -308,7 +312,38 @@ class CustomerApiTests {
 
   }
 
+  static Stream<String> invalidCustomerJsons() {
+    return Stream.of(
+      // name with more than 100 characters
+      """
+        {
+          "name": "%s",
+          "birthdate": "2001-04-23",
+          "state": "active"
+        }
+        """
+        .formatted(
+          "a".repeat(101)
+        ),
+      // customer is too young
+      """
+        {
+          "name": "Tom Mayer",
+          "birthdate": "%s",
+          "state": "active"
+        }
+        """
+        .formatted(
+          LocalDate
+            .now()
+            .minusYears(10)
+            .format(DateTimeFormatter.ISO_DATE)
+        )
+    );
+  }
+
   @ParameterizedTest
+  @MethodSource("invalidCustomerJsons")
   @ValueSource(strings = {
     // UUID included
     """
@@ -354,14 +389,6 @@ class CustomerApiTests {
     """
       {
         "name": "T",
-        "birthdate": "2001-04-23",
-        "state": "active"
-      }
-      """,
-    // name with more than 100 characters
-    """
-      {
-        "name": "T0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789",
         "birthdate": "2001-04-23",
         "state": "active"
       }

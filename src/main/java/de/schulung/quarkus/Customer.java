@@ -20,6 +20,7 @@ public class Customer {
   private String name;
   // @JsonProperty("birth_date")
   @NotNull
+  @Adult
   private LocalDate birthdate;
   @CustomerState
   private String state;
