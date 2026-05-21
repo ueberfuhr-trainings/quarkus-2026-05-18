@@ -33,6 +33,17 @@ class CustomerApiTests {
       .body("", is(instanceOf(List.class)));
   }
 
+  @Test
+  void given_invalid_state_parameter_when_get_customers_then_status_bad_request() {
+    given()
+      .accept(ContentType.JSON)
+      .queryParam("state", "gelbekatze")
+      .when()
+      .get("/customers")
+      .then()
+      .statusCode(400);
+  }
+
   // GET /customers mit XML -> 406
 
   @Test

@@ -25,7 +25,11 @@ public class CustomersResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Stream<Customer> getCustomers(@QueryParam("state") String stateFilter) {
+  public Stream<Customer> getCustomers(
+    @QueryParam("state")
+    @CustomerState
+    String stateFilter
+  ) {
     return
       null == stateFilter
         ? customersService.getCustomers()
