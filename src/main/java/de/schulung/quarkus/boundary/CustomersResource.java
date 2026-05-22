@@ -1,6 +1,5 @@
 package de.schulung.quarkus.boundary;
 
-import de.schulung.quarkus.domain.CustomerState;
 import de.schulung.quarkus.domain.CustomersService;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -30,14 +29,14 @@ public class CustomersResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Stream<CustomerDto> getCustomers(
     @QueryParam("state")
-    @CustomerState
+    @ValidCustomerState
     String stateFilter
   ) {
     return
       (
         null == stateFilter
           ? customersService.getCustomers()
-          : customersService.getCustomersByState(stateFilter)
+          : customersService.getCustomersByState(mapper.mapState(stateFilter))
       )
         .map(mapper::map);
   }

@@ -1,7 +1,6 @@
 package de.schulung.quarkus.boundary;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.schulung.quarkus.domain.CustomerState;
 import de.schulung.quarkus.shared.validation.Adult;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -24,7 +23,7 @@ public class CustomerDto {
   @NotNull
   @Adult
   private LocalDate birthdate;
-  @CustomerState
+  @ValidCustomerState
   private String state;
 
 }

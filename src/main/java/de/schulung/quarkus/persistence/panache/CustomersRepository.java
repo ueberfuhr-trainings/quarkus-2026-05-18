@@ -10,7 +10,7 @@ import java.util.UUID;
 public class CustomersRepository
   implements PanacheRepositoryBase<CustomerEntity, UUID> {
 
-  public List<CustomerEntity> findAllByState(String state) {
+  public List<CustomerEntity> findAllByState(char state) {
     return list("state", state);
   }
 

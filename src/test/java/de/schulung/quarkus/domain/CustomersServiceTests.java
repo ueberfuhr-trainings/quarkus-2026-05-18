@@ -34,7 +34,7 @@ class CustomersServiceTests {
         "customer without birthdate",
         new Customer()
           .setName("Tom Mayer")
-          .setState("active")
+          .setState(CustomerState.ACTIVE)
       )
     );
   }

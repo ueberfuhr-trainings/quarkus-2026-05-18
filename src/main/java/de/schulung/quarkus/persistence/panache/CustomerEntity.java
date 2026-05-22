@@ -24,6 +24,7 @@ public class CustomerEntity {
   private String name;
   @Column(name = "DAY_OF_BIRTH")
   private LocalDate birthdate;
-  private String state;
+  @Column(length = 1, nullable = false)
+  private char state;
 
 }

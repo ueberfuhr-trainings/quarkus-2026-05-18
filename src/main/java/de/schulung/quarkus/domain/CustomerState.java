@@ -1,37 +1,7 @@
 package de.schulung.quarkus.domain;
 
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
-import jakarta.validation.ReportAsSingleViolation;
-import jakarta.validation.constraints.Pattern;
+public enum CustomerState {
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-@Retention(RetentionPolicy.RUNTIME)
-@Target({
-  ElementType.FIELD,
-  ElementType.PARAMETER,
-  ElementType.METHOD,
-  ElementType.ANNOTATION_TYPE,
-  ElementType.CONSTRUCTOR,
-  ElementType.TYPE_USE
-})
-@Documented
-@Constraint(validatedBy = {})
-@Pattern(regexp = "active|locked|disabled")
-@ReportAsSingleViolation
-public @interface CustomerState {
-
-  // TODO: Layer?
-
-  String message() default "Not a valid customer state.";
-
-  Class<?>[] groups() default {};
-
-  Class<? extends Payload>[] payload() default {};
+  ACTIVE, LOCKED, DISABLED;
 
 }
