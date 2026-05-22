@@ -1,5 +1,6 @@
 package de.schulung.quarkus.domain;
 
+import de.schulung.quarkus.shared.interceptors.LogPerformance;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +28,7 @@ public class CustomersService {
     return sink.findById(uuid);
   }
 
+  @LogPerformance
   public void createCustomer(@Valid @NotNull Customer customer) {
     sink.create(customer);
   }
