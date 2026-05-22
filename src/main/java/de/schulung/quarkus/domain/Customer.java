@@ -1,6 +1,7 @@
-package de.schulung.quarkus;
+package de.schulung.quarkus.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.schulung.quarkus.shared.validation.Adult;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +15,8 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.UUID;
+
+// TODO: Layer?
 
 @Getter
 @Setter

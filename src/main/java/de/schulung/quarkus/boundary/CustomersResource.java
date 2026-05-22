@@ -1,5 +1,8 @@
-package de.schulung.quarkus;
+package de.schulung.quarkus.boundary;
 
+import de.schulung.quarkus.domain.Customer;
+import de.schulung.quarkus.domain.CustomerState;
+import de.schulung.quarkus.domain.CustomersService;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
