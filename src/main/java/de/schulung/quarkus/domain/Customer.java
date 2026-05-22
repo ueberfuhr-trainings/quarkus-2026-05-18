@@ -21,6 +21,6 @@ public class Customer {
   @Adult
   private LocalDate birthdate;
   @CustomerState
-  private String state;
+  private String state; // TODO Enum
 
 }
