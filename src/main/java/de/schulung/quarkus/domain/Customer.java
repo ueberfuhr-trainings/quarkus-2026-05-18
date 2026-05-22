@@ -20,7 +20,6 @@ public class Customer {
   @NotNull
   @Adult
   private LocalDate birthdate;
-  @CustomerState
-  private String state; // TODO Enum
+  private CustomerState state;
 
 }

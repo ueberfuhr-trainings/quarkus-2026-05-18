@@ -22,7 +22,7 @@ public class CustomersApiWithDatabaseChecksTests {
   @Inject
   @TableChanges("customers")
   Changes changes;
-  
+
   // POST /customers -> 201 + neuer Datensatz
   @Test
   void when_post_customers_then_status_created_and_inserted_into_database() {
@@ -53,7 +53,7 @@ public class CustomersApiWithDatabaseChecksTests {
       .value("uuid").isEqualTo(UUID.fromString(newCustomerUuid.toString()))
       .value("name").isEqualTo("Tom Mayer")
       .value("DAY_OF_BIRTH").isEqualTo(LocalDate.of(2000, Month.MAY, 19))
-      .value("state").isEqualTo("active");
+      .value("state").isEqualTo("A");
 
 
   }
