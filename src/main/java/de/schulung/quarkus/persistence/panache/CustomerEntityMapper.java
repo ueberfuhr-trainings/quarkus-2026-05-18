@@ -14,19 +14,20 @@ public interface CustomerEntityMapper {
 
   void copy(CustomerEntity entity, @MappingTarget Customer customer);
 
-  default String mapState(CustomerState source) {
-    return null == source ? null : switch (source) {
-      case ACTIVE -> "A";
-      case LOCKED -> "L";
-      case DISABLED -> "D";
+  default char mapState(CustomerState source) {
+    return null == source ? '-' : switch (source) {
+      case ACTIVE -> 'A';
+      case LOCKED -> 'L';
+      case DISABLED -> 'D';
     };
   }
 
-  default CustomerState mapState(String source) {
-    return null == source ? null : switch (source) {
-      case "A" -> CustomerState.ACTIVE;
-      case "L" -> CustomerState.LOCKED;
-      case "D" -> CustomerState.DISABLED;
+  default CustomerState mapState(char source) {
+    return switch (source) {
+      case 'A' -> CustomerState.ACTIVE;
+      case 'L' -> CustomerState.LOCKED;
+      case 'D' -> CustomerState.DISABLED;
+      case '-' -> null;
       default -> throw new IllegalArgumentException("Unknown state " + source);
     };
   }

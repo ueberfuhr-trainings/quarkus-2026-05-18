@@ -36,7 +36,7 @@ public class CustomersResource {
       (
         null == stateFilter
           ? customersService.getCustomers()
-          : customersService.getCustomersByState(stateFilter)
+          : customersService.getCustomersByState(mapper.mapState(stateFilter))
       )
         .map(mapper::map);
   }

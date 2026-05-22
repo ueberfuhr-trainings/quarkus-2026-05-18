@@ -19,7 +19,7 @@ public class CustomersService {
     return sink.findAll();
   }
 
-  public Stream<Customer> getCustomersByState(String state) {
+  public Stream<Customer> getCustomersByState(CustomerState state) {
     return sink.findAllByState(state);
   }
 

@@ -1,6 +1,7 @@
 package de.schulung.quarkus.persistence.panache;
 
 import de.schulung.quarkus.domain.Customer;
+import de.schulung.quarkus.domain.CustomerState;
 import de.schulung.quarkus.domain.CustomersSink;
 import io.quarkus.arc.properties.UnlessBuildProperty;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -39,9 +40,9 @@ public class CustomersSinkPanacheImpl
   }
 
   @Override
-  public Stream<Customer> findAllByState(String state) {
+  public Stream<Customer> findAllByState(CustomerState state) {
     return customersRepository
-      .findAllByState(state)
+      .findAllByState(mapper.mapState(state))
       .stream()
       .map(mapper::map);
   }
