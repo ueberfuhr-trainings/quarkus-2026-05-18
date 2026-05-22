@@ -1,8 +1,8 @@
 package de.schulung.quarkus.domain;
 
+import de.schulung.quarkus.shared.interceptors.FireEvent;
 import de.schulung.quarkus.shared.interceptors.LogPerformance;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Event;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 public class CustomersService {
 
   private final CustomersSink sink;
-  private final Event<Object> eventPublisher;
 
   public Stream<Customer> getCustomers() {
     return sink.findAll();
@@ -31,11 +30,9 @@ public class CustomersService {
   }
 
   @LogPerformance
+  @FireEvent(CustomerCreatedEvent.class)
   public void createCustomer(@Valid @NotNull Customer customer) {
     sink.create(customer);
-    eventPublisher
-      .select(CustomerCreatedEvent.class)
-      .fire(new CustomerCreatedEvent(customer));
   }
 
 
