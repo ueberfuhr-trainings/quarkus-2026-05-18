@@ -1,4 +1,4 @@
-package de.schulung.quarkus;
+package de.schulung.quarkus.boundary;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import io.quarkus.jackson.ObjectMapperCustomizer;

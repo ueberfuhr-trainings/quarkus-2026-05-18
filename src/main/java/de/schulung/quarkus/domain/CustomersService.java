@@ -1,5 +1,6 @@
-package de.schulung.quarkus;
+package de.schulung.quarkus.domain;
 
+import de.schulung.quarkus.persistence.CustomersRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

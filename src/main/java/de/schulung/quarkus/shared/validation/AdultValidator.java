@@ -1,4 +1,4 @@
-package de.schulung.quarkus;
+package de.schulung.quarkus.shared.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

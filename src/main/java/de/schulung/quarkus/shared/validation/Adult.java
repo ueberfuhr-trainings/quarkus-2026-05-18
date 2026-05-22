@@ -1,15 +1,14 @@
-package de.schulung.quarkus;
+package de.schulung.quarkus.shared.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import jakarta.validation.ReportAsSingleViolation;
-import jakarta.validation.constraints.Pattern;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.time.temporal.ChronoUnit;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({
@@ -21,15 +20,17 @@ import java.lang.annotation.Target;
   ElementType.TYPE_USE
 })
 @Documented
-@Constraint(validatedBy = {})
-@Pattern(regexp = "active|locked|disabled")
-@ReportAsSingleViolation
-public @interface CustomerState {
+@Constraint(validatedBy = AdultValidator.class)
+public @interface Adult {
 
-  String message() default "Not a valid customer state.";
+  String message() default "Is not an adult.";
 
   Class<?>[] groups() default {};
 
   Class<? extends Payload>[] payload() default {};
+
+  long value() default 18;
+
+  ChronoUnit unit() default ChronoUnit.YEARS;
 
 }

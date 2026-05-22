@@ -1,5 +1,6 @@
-package de.schulung.quarkus;
+package de.schulung.quarkus.persistence;
 
+import de.schulung.quarkus.domain.Customer;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
