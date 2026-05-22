@@ -28,31 +28,37 @@ public class CustomersSinkPanacheImpl
   implements CustomersSink {
 
   private final CustomersRepository customersRepository;
+  private final CustomerEntityMapper mapper;
 
   @Override
   public Stream<Customer> findAll() {
     return customersRepository
       .findAll()
-      .stream();
+      .stream()
+      .map(mapper::map);
   }
 
   @Override
   public Stream<Customer> findAllByState(String state) {
     return customersRepository
       .findAllByState(state)
-      .stream();
+      .stream()
+      .map(mapper::map);
   }
 
   @Override
   public Optional<Customer> findById(UUID id) {
     return customersRepository
-      .findByIdOptional(id);
+      .findByIdOptional(id)
+      .map(mapper::map);
   }
 
   @Transactional
   @Override
   public void create(Customer customer) {
-    customersRepository.persist(customer);
+    final var entity = mapper.map(customer);
+    customersRepository.persist(entity);
+    mapper.copy(entity, customer);
   }
 
 }
