@@ -17,7 +17,6 @@ public class Customer {
   @NotNull
   @Size(min = 3, max = 100)
   private String name;
-  // @JsonProperty("birth_date")
   @NotNull
   @Adult
   private LocalDate birthdate;
