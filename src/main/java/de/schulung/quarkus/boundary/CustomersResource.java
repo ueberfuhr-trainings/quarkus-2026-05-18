@@ -1,6 +1,5 @@
 package de.schulung.quarkus.boundary;
 
-import de.schulung.quarkus.domain.Customer;
 import de.schulung.quarkus.domain.CustomerState;
 import de.schulung.quarkus.domain.CustomersService;
 import jakarta.validation.Valid;
@@ -25,41 +24,48 @@ import java.util.stream.Stream;
 public class CustomersResource {
 
   private final CustomersService customersService;
+  private final CustomerDtoMapper mapper;
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Stream<Customer> getCustomers(
+  public Stream<CustomerDto> getCustomers(
     @QueryParam("state")
     @CustomerState
     String stateFilter
   ) {
     return
-      null == stateFilter
-        ? customersService.getCustomers()
-        : customersService.getCustomersByState(stateFilter);
+      (
+        null == stateFilter
+          ? customersService.getCustomers()
+          : customersService.getCustomersByState(stateFilter)
+      )
+        .map(mapper::map);
   }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createCustomer(@Valid Customer customer, UriInfo uriInfo) {
+  public Response createCustomer(@Valid CustomerDto customerDto, UriInfo uriInfo) {
+    final var customer = mapper.map(customerDto);
     customersService.createCustomer(customer);
+    final var responseCustomerDto = mapper.map(customer);
     var location = uriInfo
       .getAbsolutePathBuilder()
-      .path(customer.getUuid().toString())
+      .path(responseCustomerDto.getUuid().toString())
       .build();
     return Response
       .created(location)
-      .entity(customer)
+      .entity(responseCustomerDto)
       .build();
   }
 
   @GET
   @Path("/{uuid}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Customer getCustomerById(@PathParam("uuid") UUID uuid) {
+  public CustomerDto getCustomerById(@PathParam("uuid") UUID uuid) {
     return customersService
       .getCustomerById(uuid)
+      .map(mapper::map)
       .orElseThrow(NotFoundException::new);
   }
 

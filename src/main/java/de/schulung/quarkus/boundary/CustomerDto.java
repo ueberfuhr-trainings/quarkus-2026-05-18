@@ -1,5 +1,7 @@
-package de.schulung.quarkus.domain;
+package de.schulung.quarkus.boundary;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import de.schulung.quarkus.domain.CustomerState;
 import de.schulung.quarkus.shared.validation.Adult;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,16 +13,18 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class Customer {
+public class CustomerDto {
 
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   private UUID uuid;
   @NotNull
   @Size(min = 3, max = 100)
   private String name;
+  // @JsonProperty("birth_date")
   @NotNull
   @Adult
   private LocalDate birthdate;
   @CustomerState
-  private String state; // TODO Enum
+  private String state;
 
 }

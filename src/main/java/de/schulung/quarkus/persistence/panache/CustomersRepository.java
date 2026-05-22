@@ -1,6 +1,5 @@
 package de.schulung.quarkus.persistence.panache;
 
-import de.schulung.quarkus.domain.Customer;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -9,9 +8,9 @@ import java.util.UUID;
 
 @ApplicationScoped
 public class CustomersRepository
-  implements PanacheRepositoryBase<Customer, UUID> {
+  implements PanacheRepositoryBase<CustomerEntity, UUID> {
 
-  public List<Customer> findAllByState(String state) {
+  public List<CustomerEntity> findAllByState(String state) {
     return list("state", state);
   }
 
