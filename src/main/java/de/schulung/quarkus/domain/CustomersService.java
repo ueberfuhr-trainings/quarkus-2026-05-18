@@ -1,8 +1,6 @@
 package de.schulung.quarkus.domain;
 
-import de.schulung.quarkus.persistence.CustomersRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -15,28 +13,22 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class CustomersService {
 
-  private final CustomersRepository customersRepository;
+  private final CustomersSink sink;
 
   public Stream<Customer> getCustomers() {
-    return customersRepository
-      .findAll()
-      .stream();
+    return sink.findAll();
   }
 
   public Stream<Customer> getCustomersByState(String state) {
-    return customersRepository
-      .findAllByState(state)
-      .stream();
+    return sink.findAllByState(state);
   }
 
   public Optional<Customer> getCustomerById(@NotNull UUID uuid) {
-    return customersRepository
-      .findByIdOptional(uuid);
+    return sink.findById(uuid);
   }
 
-  @Transactional
   public void createCustomer(@Valid @NotNull Customer customer) {
-    customersRepository.persist(customer);
+    sink.create(customer);
   }
 
 
